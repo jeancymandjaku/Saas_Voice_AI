@@ -75,7 +75,7 @@ Launch SaaS est une application web moderne construite avec Next.js, utilisant C
 
 4. **Configuration de Clerk**
 
-   - Créer un fichier `middleware.ts` à la racine avec :
+   - Créer un fichier `proxy.ts` à la racine avec :
 
      ```typescript
      import { clerkMiddleware } from '@clerk/nextjs/server'

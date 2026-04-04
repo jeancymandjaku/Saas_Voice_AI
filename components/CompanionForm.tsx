@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, type SubmitHandler } from "react-hook-form"
 import {z} from "zod";
 
 import { Button } from "@/components/ui/button"
@@ -40,8 +40,10 @@ const formSchema = z.object({
     .min(1, { message: "Duration is required." }),
 })
 
+type CompanionFormValues = z.infer<typeof formSchema>
+
 const CompanionForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<CompanionFormValues>({
     resolver: zodResolver(formSchema),
     // resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,7 +56,7 @@ const CompanionForm = () => {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit: SubmitHandler<CompanionFormValues> = (values) => {
     console.log(values)
   }
 
