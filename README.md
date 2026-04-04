@@ -1,103 +1,183 @@
-# Add Clerk to Next.js App Router
+# Launch SaaS
 
-If a Next.js App Router project does not already exist, first create one using:
+## Description
 
-```bash
-npx create-next-app@latest my-clerk-app --yes
+Launch SaaS est une application web moderne construite avec Next.js, utilisant Clerk pour l'authentification et Supabase pour la gestion des données. Cette plateforme SaaS permet aux utilisateurs de créer et gérer des "compagnons" personnalisés, de suivre leur parcours personnel et de gérer des abonnements.
+
+## Captures d'écran
+
+### Page d'accueil
+![Page d'accueil](public/readme/homepage.png)
+
+### Gestion des compagnons
+![Gestion des compagnons](public/readme/companions.png)
+
+### Interface d'authentification
+![Authentification](public/readme/auth.png)
+
+- **Authentification sécurisée** : Intégration de Clerk pour la gestion des utilisateurs, des connexions et des profils.
+- **Gestion des compagnons** : Création, modification et visualisation de compagnons personnalisés.
+- **Parcours utilisateur** : Suivi et gestion du parcours personnel des utilisateurs.
+- **Abonnements** : Gestion des plans d'abonnement et des paiements.
+- **Interface responsive** : Design adaptatif pour tous les appareils.
+- **API intégrée** : Utilisation de VAPI pour des fonctionnalités avancées.
+
+## Technologies utilisées
+
+- **Frontend** : Next.js 14 avec App Router
+- **Authentification** : Clerk
+- **Base de données** : Supabase
+- **Styling** : Tailwind CSS avec PostCSS
+- **UI Components** : Composants personnalisés avec shadcn/ui
+- **TypeScript** : Pour un développement typé
+- **ESLint** : Pour la qualité du code
+
+## Installation
+
+### Prérequis
+
+- Node.js (version 18 ou supérieure)
+- npm ou yarn
+- Un compte Clerk
+- Un compte Supabase
+
+### Étapes d'installation
+
+1. **Cloner le repository**
+
+   ```bash
+   git clone <url-du-repository>
+   cd launch_saas
+   ```
+
+2. **Installer les dépendances**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configuration de l'environnement**
+
+   Créer un fichier `.env.local` à la racine du projet avec les variables suivantes :
+
+   ```env
+   # Clerk - Obtenez ces clés depuis votre dashboard Clerk (https://dashboard.clerk.com)
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=votre_clé_publique_clerk
+   CLERK_SECRET_KEY=votre_clé_secrète_clerk
+
+   # Supabase - Obtenez ces clés depuis votre projet Supabase (https://supabase.com/dashboard)
+   NEXT_PUBLIC_SUPABASE_URL=votre_url_supabase
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=votre_clé_anon_supabase
+   SUPABASE_SERVICE_ROLE_KEY=votre_clé_service_role_supabase
+
+   # Autres variables si nécessaire
+   ```
+
+4. **Configuration de Clerk**
+
+   - Créer un fichier `middleware.ts` à la racine avec :
+
+     ```typescript
+     import { clerkMiddleware } from '@clerk/nextjs/server'
+
+     export default clerkMiddleware()
+
+     export const config = {
+       matcher: [
+         '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+         '/(api|trpc)(.*)',
+       ],
+     }
+     ```
+
+   - Modifier `app/layout.tsx` pour inclure ClerkProvider :
+
+     ```typescript
+     import { ClerkProvider } from "@clerk/nextjs";
+     import "./globals.css";
+
+     export default function RootLayout({ children }: { children: React.ReactNode }) {
+       return (
+         <html lang="fr">
+           <body>
+             <ClerkProvider>
+               {children}
+             </ClerkProvider>
+           </body>
+         </html>
+       );
+     }
+     ```
+
+5. **Lancer l'application en mode développement**
+
+   ```bash
+   npm run dev
+   ```
+
+   L'application sera accessible sur `http://localhost:3000`.
+
+## Utilisation
+
+### Authentification
+
+- Les utilisateurs peuvent s'inscrire et se connecter via Clerk.
+- L'interface s'adapte automatiquement selon l'état de connexion.
+
+### Gestion des compagnons
+
+- Accéder à la section `/companions` pour voir la liste des compagnons.
+- Créer un nouveau compagnon via `/companions/new`.
+- Modifier un compagnon existant via `/companions/[id]`.
+
+### Parcours utilisateur
+
+- Consulter son parcours personnel dans `/my-journey`.
+
+### Abonnements
+
+- Gérer les abonnements dans `/subscription`.
+
+## Structure du projet
+
+```
+├── app/                    # Pages Next.js App Router
+│   ├── companions/         # Pages liées aux compagnons
+│   ├── my-journey/         # Page du parcours utilisateur
+│   ├── sign-in/            # Pages d'authentification
+│   └── subscription/       # Page des abonnements
+├── components/             # Composants React
+│   ├── ui/                 # Composants UI réutilisables
+│   └── ...                 # Autres composants
+├── constants/              # Constantes et données statiques
+├── lib/                    # Utilitaires et configurations
+├── public/                 # Assets statiques
+└── types/                  # Définitions TypeScript
 ```
 
-Install `@clerk/nextjs@latest`. Create `proxy.ts` with `clerkMiddleware()` from `@clerk/nextjs/server` (in `src/` if it exists, otherwise project root). Add `<ClerkProvider>` inside `<body>` in `app/layout.tsx`. Use `<Show>`, `<UserButton>`, `<SignInButton>`, `<SignUpButton>` from `@clerk/nextjs`.
+## Scripts disponibles
 
-Latest docs: https://clerk.com/docs/nextjs/getting-started/quickstart
+- `npm run dev` : Lance le serveur de développement
+- `npm run build` : Construit l'application pour la production
+- `npm run start` : Lance l'application en mode production
+- `npm run lint` : Vérifie la qualité du code avec ESLint
 
-## Install
+## Contribution
 
-```bash
-npm install @clerk/nextjs
-```
+1. Forker le projet
+2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commiter vos changements (`git commit -am 'Ajout de nouvelle fonctionnalité'`)
+4. Pousser vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request
 
-## proxy.ts
+## Licence
 
-```typescript
-import { clerkMiddleware } from '@clerk/nextjs/server'
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-export default clerkMiddleware()
+## Support
 
-export const config = {
-  matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
-  ],
-}
-```
+Pour toute question ou problème, veuillez ouvrir une issue sur GitHub ou contacter l'équipe de développement.
 
-## app/layout.tsx
+---
 
-```typescript
-import { ClerkProvider, SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
-import "./globals.css";
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body>
-        <ClerkProvider>
-          <header>
-            <Show when="signed-out">
-              <SignInButton />
-              <SignUpButton />
-            </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
-          </header>
-          {children}
-        </ClerkProvider>
-      </body>
-    </html>
-  );
-}
-```
-
-## Rules
-
-ALWAYS:
-
-- Use `clerkMiddleware()` from `@clerk/nextjs/server` in `proxy.ts`
-- Add `<ClerkProvider>` inside `<body>` in `app/layout.tsx`
-- Import from `@clerk/nextjs` or `@clerk/nextjs/server`
-- Use App Router (app/page.tsx, app/layout.tsx)
-- async/await with auth() from `@clerk/nextjs/server`
-- Use existing package manager
-
-NEVER:
-
-- Reference `_app.tsx` or pages router
-- Use `authMiddleware()` (replaced by `clerkMiddleware()`)
-- Use old env var patterns
-- Import deprecated APIs (withAuth, old currentUser)
-- Use deprecated `<SignedIn>`, `<SignedOut>` (replaced by `<Show>`)
-
-## Deprecated (DO NOT use)
-
-```typescript
-import { authMiddleware } from '@clerk/nextjs' // WRONG
-function MyApp({ Component, pageProps }) {} // pages router, WRONG
-pages / signin.js // WRONG
-<SignedIn> // WRONG, use <Show when="signed-in">
-<SignedOut> // WRONG, use <Show when="signed-out">
-```
-
-## Verify Before Responding
-
-1. Is `clerkMiddleware()` used in `proxy.ts`?
-2. Is `ClerkProvider` inside `<body>` in `app/layout.tsx`?
-3. Are imports only from `@clerk/nextjs` or `@clerk/nextjs/server`?
-4. Is it using App Router, not `_app.tsx` or `pages/`?
-5. Is it using `<Show>` instead of `<SignedIn>`/`<SignedOut>`?
-
-If any fails, revise.
-
-## After Setup
-
-Have the user sign up as their first test user in the nav. After signup succeeds and a profile icon appears, congratulate them. Then recommend exploring: Organizations (https://clerk.com/docs/guides/organizations/overview), Components (https://clerk.com/docs/reference/components/overview), Dashboard (https://dashboard.clerk.com/).
+*Développé avec ❤️ en utilisant Next.js et Clerk*
