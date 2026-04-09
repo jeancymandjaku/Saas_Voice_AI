@@ -23,13 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+        <ClerkProvider>
     <html lang="en" className={cn("font-sans", inter.variable)}>
       <body className={`${bricolage.variable} antialiased`}>
-        <ClerkProvider>
           <Navbar />
           {children}
-        </ClerkProvider>
       </body>
     </html>
+        </ClerkProvider>
   );
 }

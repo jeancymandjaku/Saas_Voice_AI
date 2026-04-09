@@ -21,7 +21,7 @@ type Companion = Models.DocumentList<Models.Document> & {
   $id: string;
   name: string;
   subject: Subject;
-  topic: string;
+  description: string;
   duration: number;
   bookmarked: boolean;
 };
@@ -29,7 +29,7 @@ type Companion = Models.DocumentList<Models.Document> & {
 interface CreateCompanion {
   name: string;
   subject: string;
-  topic: string;
+  description: string;
   voice: string;
   style: string;
   duration: number;
@@ -39,7 +39,7 @@ interface GetAllCompanions {
   limit?: number;
   page?: number;
   subject?: string | string[];
-  topic?: string | string[];
+  description?: string | string[];
 }
 
 interface BuildClient {
@@ -74,7 +74,7 @@ interface SavedMessage {
 interface CompanionComponentProps {
   companionId: string;
   subject: string;
-  topic: string;
+  description: string;
   name: string;
   userName: string;
   userImage: string;
