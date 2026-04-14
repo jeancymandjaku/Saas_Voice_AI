@@ -3,8 +3,8 @@ import { subjects } from "@/constants"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { useEffect, useState } from "react"
 import { formUrlQuery, removeKeysFromUrlQuery } from "@jsmastery/utils"
-import { useRouter } from "next/router"
-import { useSearchParams } from "next/navigation"
+// import { useRouter } from "next/router"
+import { useSearchParams, useRouter } from "next/navigation"
 
 const SubjectFilter = () => {
   const router = useRouter();
